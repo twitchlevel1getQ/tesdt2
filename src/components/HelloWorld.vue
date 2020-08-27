@@ -15,7 +15,7 @@ export default {
     }
   },
   methods: {
-    //你好
+    //你好ㄋ  
     getapi() { 
       let tag = 'lib.cg.getDrugBasicData'
       let param = new FormData()
