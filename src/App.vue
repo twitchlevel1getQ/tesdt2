@@ -1,18 +1,18 @@
 <template>
   <div id="app">
-    <router-link class="tag" to="/about">About</router-link>
-        <router-link class="tag" to="/room">Room</router-link>
+    <!-- <router-link class="tag" to="/about">About</router-link>
+        <router-link class="tag" to="/room">Room</router-link> -->
 
     <!-- 路由出口 -->
     <!-- 路由匹配到的组件將渲染在這 -->
     <router-view/>
-    <div v-for="(val, key) in roomlist">
+    <!-- <div v-for="(val, key) in roomlist">
       <div>{{val.roomName}}</div>
       <div>{{val.roomType}}</div>
       <div>{{val.weekdayPrice}} ~ {{val.weekendPrice}}</div>
       <img :src="val.image">
     
-    </div>
+    </div> -->
   </div> 
 </template>
 
@@ -21,6 +21,7 @@ export default {
   name: 'App',
   data() {
     return {
+      //8888888
       'roomlist' : [  
           {
             roomType: '雙人房',
