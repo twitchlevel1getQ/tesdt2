@@ -1,14 +1,18 @@
 <template>
   <div class="hello">
-     <select class="" @change="callapi()" v-model="location" >
-      <option  v-for="data in locationarray" :value="data">
-        {{data}}
-      </option >
-     </select>
-     <div>location:{{location}}</div>
-     <!-- <div>{{weatherElement}}</div> -->
-     <div>{{Wx}}</div>
-
+    <div class='container'>
+      <select class="" @change="callapi()" v-model="location" >
+        <option  v-for="data in locationarray" :value="data">
+          {{data}}
+        </option >
+      </select>
+      <div>location:{{location}}</div>
+      <!-- <div>{{weatherElement}}</div> -->
+      <span class="icon"><img :src='src'></span>
+      <div><img :src='ub' width="16px" height="16px"> {{PoP}}%</div>
+      <div>{{MinT}} ~ {{MaxT}}</div>
+      <div>CI:{{cCI}}</div>
+    </div>
 
      <!-- {{res}} -->
   </div>
@@ -27,13 +31,21 @@ export default {
       location: "",
       res:[],
       weatherElement:[],
-      Wx:[],
-
+      Wx:'',
+      PoP:'',
+      MinT:'',
+      cCI:'',
+      MaxT:'',
+      srcurl:"https://www.cwb.gov.tw/V8/assets/img/weather_icons/weathers/svg_icon/day/",
+      src:'',
+      ub:"https://image.flaticon.com/icons/svg/414/414974.svg" 
     }
   },
   methods: {
     //你好ㄋ  
     callapi() {
+      let self = this
+      // this.paddingLeft1(2,2)
       this.$axios
       .get(
         "https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization="+this.apikey+"&format=json&locationName="+this.location
@@ -42,8 +54,18 @@ export default {
         console.log(Response)
         this.res = Response
         this.weatherElement = this.res.data.records.location[0].weatherElement
-        this.Wx = this.weatherElement[0]
+        this.Wx = this.weatherElement[0].time[0].parameter;
+        this.src = '';
+        this.src = this.srcurl + self.paddingLeft1(this.Wx.parameterValue,2)+ '.svg';
+        this.PoP = this.weatherElement[1].time[0].parameter.parameterName;
+        this.MinT = this.weatherElement[2].time[0].parameter.parameterName;
+        this.cCI = this.weatherElement[3].time[0].parameter.parameterName;
+        this.MaxT = this.weatherElement[4].time[0].parameter.parameterName;
 
+
+
+        // this.Wx.forEach(element => console.log(element.parameter.parameterName));
+        console.log(this.src)
         console.log(this.weatherElement)
       })
       .catch((error) => {
@@ -51,7 +73,13 @@ export default {
       })
     },
 
-
+    paddingLeft1(str,lenght) {
+      if(str.length >= lenght) {
+      return str;
+       } else {
+      return this.paddingLeft1("0" +str,lenght);
+       }
+    },
     getapi() { 
       let tag = 'lib.cg.getDrugBasicData'
       let param = new FormData()
@@ -100,5 +128,14 @@ li {
 }
 a {
   color: #42b983;
+}
+.container {
+  background-color: #1a67b1;
+  border-radius: 10px;
+  color: #fff;
+  width: calc(80% - 8px);
+  margin: 4px 0;
+  height: 450px;
+
 }
 </style>
